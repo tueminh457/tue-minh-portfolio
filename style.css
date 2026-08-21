@@ -35,12 +35,52 @@
     --nav-gap: 0.1vw;
     /* progress: 0 at 1024px wide, 1 at 360px wide */
     --t: clamp(0, calc((1024px - 100vw) / 664px), 1);
-
-    --responsive-scale: calc(1 + var(--t) * 0.65);  /* 1 -> 1.65 */
-    --responsive-y: calc(var(--t) * 45vh);          /* 0 -> 45vh */
-    --group-inward: calc(var(--t) * -2vw);     /* 0 -> 2vw outward from the center */
+    --t2: clamp(0, calc((1980px - 100vw) / 1620px), 1);
+    --t3: clamp(0, calc((800px - 100vw) / 440px), 1);
+    --t4: clamp(0, calc((500px - 100vw) / 140px), 1);  /* 0 at 500px, 1 at 360px */
+    
+    --responsive-scale: calc(1 + var(--t) * 0.65);
+    --responsive-y: calc(var(--t) * 20vh);   /* was 45vh — now moves less overall */
+    --group-inward: calc(var(--t) * -2vw);
     --speaker-inward: calc(var(--t) * -2vw);
+
+    /* new: speakers scale down and push outward as screen narrows */
+    --speaker-scale: calc(1 - var(--t2) * 0.65 + var(--t) * 0.45 - var(--t3) * 0.40);
+    --speaker-outward: calc(var(--t2) * 20vw + var(--t3) * 20vw + var(--t4) * -10vw);
+
+    --speaker-down: calc(var(--t2) * 14vw + var(--t) * 10vw + var(--t3) * 40vw);        
+    --speaker-down-2: calc(var(--t2) * 16vw + var(--t) * 10vw + var(--t3) * 50vw);     
+    --speaker-down-3: calc(var(--t2) * 25vw + var(--t) * 10vw + var(--t3) * 50vw);
+
+
+    --button-scale: max(0.7, calc(1 - var(--t) * 0.3));
+    --button-outward: calc(var(--t) * 10vw);
+
+    --creek-scale-x: calc(1 - var(--t2) * 0.05 + var(--t) * 0.7 - var(--t3) * 0.2);
+    --creek-scale-y: calc(1 + var(--t2) * 0.3 + var(--t) * 1.5 + var(--t3) * 0.3);
+   
+    /* laptop: 0 at 2100px, 1 at 1024px */
+    --t7-laptop: clamp(0, calc((2100px - 100vw) / 1076px), 1);
+
+    /* phone: 0 at 600px, 1 at 360px */
+    --t7-phone: clamp(0, calc((600px - 100vw) / 240px), 1);
+
+    /* strengthened a bit for more lift above 1024px */
+    --bottom-push-laptop: calc(600px * (1 - var(--t7-laptop)) - var(--t7-laptop) * 38vw);
+
+    /* eased back a bit on phone */
+    --bottom-push-phone: calc(var(--t7-phone) * -15vw);
+
+    --bottom-push-tablet: 0px;
+
+    --bottom-push: calc(
+        var(--bottom-push-laptop) +
+        var(--bottom-push-tablet) +
+        var(--bottom-push-phone)
+    );
+
 }
+
 
 /*===========================*/
 
@@ -59,6 +99,15 @@ html{
 
 body {
   background-color: var(--background-color);
+    min-height: 100vh;
+}
+
+.works-page {
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        min-height: 100svh;
+        min-height: 100dvh;
 }
 
 a {
@@ -124,6 +173,8 @@ header {
     transform: translateX(calc(-50% + var(--nav-gap) + 100%)) translateY(-11%);
 }
 
+
+
 /*============HOME PAGE===============*/
 
 .home-page{
@@ -156,18 +207,7 @@ header {
     z-index: 0;
 }
 
-.home-bg-button{
-    position: absolute;
-    inset: 0;
-}
-.home-bg-screen,
-.home-bg-pink,
-.home-bg-button-left,
-.home-bg-button-right{
-    transform:
-        translate(-50%, calc(-50% + var(--responsive-y)))
-        scale(var(--responsive-scale));
-}
+
 .home-bg-screen{
     z-index: 2;
     position: absolute;
@@ -182,10 +222,21 @@ header {
     position: absolute;
     width: 50vw;
     left: 50%;
-    transform: translate(-50%, -50%);
-    top: clamp(50vw, 52vw, 55vw);
+    top: clamp(35vw, 38vw, 40vw);
     height: auto;
     mix-blend-mode: hard-light;
+    transform: translateX(-50%) scaleX(var(--creek-scale-x)) scaleY(var(--creek-scale-y));
+    transform-origin: top center;    
+}
+
+.home-bg-bottom{
+    z-index: 2;
+    position: absolute;
+    width: 200vw;
+    left: 50%;
+    top: 100%;
+    height: auto;
+    transform: translateX(-50%) translateY(var(--bottom-push));
 }
 
 .home-bg-pink{
@@ -216,87 +267,183 @@ header {
     top: 24vw;
 }
 
+.home-bg-button{
+    position: absolute;
+    inset: 0;
+}
+.home-bg-screen,
+.home-bg-pink{
+    transform:
+        translate(-50%, calc(-50% + var(--responsive-y)))
+        scale(var(--responsive-scale));
+}
 
+.home-bg-button-left,
+.home-bg-button-right{
+    top: 24vw;
+    width: clamp(48px, 10vw, 220px);
+}
+
+.home-bg-button-left{
+    transform: translate(calc(-50% - var(--button-outward)), calc(-50% + var(--responsive-y)));
+}
+
+.home-bg-button-right{
+    transform: translate(calc(-50% + var(--button-outward)), calc(-50% + var(--responsive-y)));
+}
 
 .speaker {
     position: relative;
 }
 
-.speaker-left1{
+/* LEFT GROUP */
+.speaker-left1,
+.speaker-left2,
+.speaker-left3 {
     position: absolute;
-    z-index: 4;
     left: 8%;
-    transform: translateX(-50%);
-    width: 40vw;
-    top: 4vw;
-    mix-blend-mode: color-burn;
+    transform: translate(calc(-1 * var(--speaker-outward)), var(--speaker-down)) scale(var(--speaker-scale));
+}
+.speaker-left1 { width: 792px; margin-left: -396px;   top: 4vw;  transform-origin: 50% -4vw;  mix-blend-mode: color-burn; }
+.speaker-left2 {
+    width: 633px; margin-left: -316.5px; top: 10vw; transform-origin: 50% -10vw; mix-blend-mode: hard-light;
+    transform: translate(calc(-1 * var(--speaker-outward)), var(--speaker-down-2)) scale(var(--speaker-scale));
+}
+.speaker-left3 {
+    width: 495px; margin-left: -247.5px; top: 20vw; transform-origin: 50% -20vw; mix-blend-mode: soft-light;
+    transform: translate(calc(-1 * var(--speaker-outward)), var(--speaker-down-3)) scale(var(--speaker-scale));
 }
 
-.speaker-left2{
+/* RIGHT GROUP */
+.speaker-right1,
+.speaker-right2,
+.speaker-right3 {
     position: absolute;
-    z-index: 4;
-    left: 8%;
-    transform: translateX(-50%);
-    width: 32vw;
-    top: 10vw;
-    mix-blend-mode: hard-light;
-}
-
-.speaker-left3{
-    position: absolute;
-    z-index: 4;
-    left: 8%;
-    transform: translateX(-50%);
-    width: 25vw;
-    top: 20vw;
-    mix-blend-mode: soft-light;
-}
-
-.speaker-right1{
-    position: absolute;
-    z-index: 4;
     right: 8%;
-    transform: translateX(50%);
-    width: 40vw;
-    top: 4vw;
-    mix-blend-mode: color-burn;
+    transform: translate(var(--speaker-outward), var(--speaker-down)) scale(var(--speaker-scale));
+}
+.speaker-right1 { width: 792px; margin-right: -396px;   top: 4vw;  transform-origin: 50% -4vw;  mix-blend-mode: color-burn; }
+.speaker-right2 {
+    width: 633px; margin-right: -316.5px; top: 10vw; transform-origin: 50% -10vw; mix-blend-mode: hard-light;
+    transform: translate(var(--speaker-outward), var(--speaker-down-2)) scale(var(--speaker-scale));
+}
+.speaker-right3 {
+    width: 495px; margin-right: -247.5px; top: 20vw; transform-origin: 50% -20vw; mix-blend-mode: soft-light;
+    transform: translate(var(--speaker-outward), var(--speaker-down-3)) scale(var(--speaker-scale));
 }
 
-.speaker-right2{
+/* ============ CIRCULAR GALLERY ============ */
+
+#works {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+    height: 100dvh;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.works-bg {
     position: absolute;
-    z-index: 4;
-    right: 8%;
-    transform: translateX(50%);
-    width: 32vw;
-    top: 10vw;
-    mix-blend-mode: hard-light;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    transform: translate(-50%, -50%) scale(1.08);
+    transform-origin: center;
+    z-index: 0;
+    pointer-events: none;
 }
 
-.speaker-right3{
+.circular-gallery {
     position: absolute;
-    z-index: 4;
-    right: 8%;
-    transform: translateX(50%);
-    width: 25vw;
-    top: 20vw;
-    mix-blend-mode: soft-light;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 70vh;
+    transform: translateY(-50%);
+    overflow: hidden;
+    z-index: 2;
+    cursor: grab;
 }
 
-.speaker-left1, .speaker-left2, .speaker-left3 {
-    transform:
-        translateX(-50%)
-        translate(var(--speaker-inward), var(--responsive-y))
-        scale(var(--responsive-scale));
-    transform-origin: top center;
+.circular-gallery:active {
+    cursor: grabbing;
 }
 
-.speaker-right1, .speaker-right2, .speaker-right3 {
-    transform:
-        translateX(50%)
-        translate(calc(var(--speaker-inward) * -1), var(--responsive-y))
-        scale(var(--responsive-scale));
-    transform-origin: top center;
+.gallery-track {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: flex;
+    gap: 120px;              /* was 60px — more breathing room between items */
+    align-items: center;
+    transform: translate(-50%, -50%);
+    will-change: transform;
 }
+
+.gallery-item {
+    position: relative;
+    flex-shrink: 0;
+    width: 360px;      /* was 280px — bigger base size */
+    height: 460px;     /* was 360px */
+    transform-origin: center center;
+}
+
+.circular-gallery {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 70vh;
+    transform: translateY(-50%);
+    overflow: hidden;
+    z-index: 2;
+    cursor: grab;
+
+    /* Fade gallery content to transparent at edges, revealing works-bg beneath */
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 20%,
+        black 80%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 20%,
+        black 80%,
+        transparent 100%
+    );
+}
+
+.circular-gallery:active {
+    cursor: grabbing;
+}
+
+.gallery-item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+    pointer-events: none;
+}
+
+.gallery-item span {
+    display: block;
+    margin-top: 10px;
+    font-family: 'Arial-Narrow', sans-serif;
+    font-size: 24px;
+    color: white;
+    text-align: center;
+}
+
 
 /*============MEDIA QUERIES===============*/
 
@@ -310,6 +457,10 @@ header {
         width: clamp(100vw, 105vw, 110vw);
         z-index: 0;
     }
+    .home-bg-button-left,
+    .home-bg-button-right{
+        width: clamp(90px, 8vw, 150px);
+    }
 }
 
 @media screen and (max-width: 1024px) {
@@ -320,6 +471,13 @@ header {
         transform: translate(-50%, -50%);
         width: clamp(100vw, 105vw, 110vw);
         z-index: 0;
+    }
+    .home-bg-button-left,
+    .home-bg-button-right{
+        width: clamp(80px, 8vw, 120px);
+    }
+    .home-bg-creek{
+        top: 389px; /* only the top position needs to lock here — transform stays inherited from above */
     }
 
 }
@@ -336,6 +494,17 @@ header {
         width: clamp(70px, 13vw, 180px);
         top: 12vw;
     }
+    .home-bg-screen{
+        top: calc(clamp(20vw, 25vw, 28vw) + 4vw);
+    }
+    .home-bg-pink{
+        top: calc(25vw + 4vw);
+    }
+    .home-bg-button-left,
+    .home-bg-button-right{
+        top: calc(24vw + 4vw);
+    }
+    
 
 }
 
@@ -348,8 +517,23 @@ header {
     .button-contact {
         top: clamp(12vw, 13vw, 15vw);
     }
+    .home-bg-button-left,
+    .home-bg-button-right{
+        width: clamp(50px, 13vw, 78px);
+    }
+    .home-bg-creek{
+        top: 350px; /* keep the same fixed top anchor */
+    }
 }
 
 @media screen and (max-width: 360px) {
     
+}
+
+/* Portrait tablets: 768–1024px wide — driven by height, not width */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    :root{
+        --bottom-push-tablet: calc((100vh - 1024px) * -0.6 - 300px);
+        --bottom-push-laptop: 0px;
+    }
 }
