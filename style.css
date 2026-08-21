@@ -292,6 +292,7 @@ header {
     transform: translate(calc(-50% + var(--button-outward)), calc(-50% + var(--responsive-y)));
 }
 
+
 .speaker {
     position: relative;
 }
@@ -331,6 +332,124 @@ header {
     width: 495px; margin-right: -247.5px; top: 20vw; transform-origin: 50% -20vw; mix-blend-mode: soft-light;
     transform: translate(var(--speaker-outward), var(--speaker-down-3)) scale(var(--speaker-scale));
 }
+
+
+/* ============ TITLE ANIMATION ============ */
+/* ============ TITLE ANIMATION ============ */
+.title-blur-layer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100vw, 100vh);
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: 198;
+    pointer-events: none;
+    opacity: 0;
+    mix-blend-mode: hard-light;
+}
+
+.click-to-continue {
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 207;
+    font-family: 'Arial-Narrow', sans-serif;
+    font-size: clamp(16px, 2vw, 24px);
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+    color: white;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0;
+    cursor: pointer;
+    pointer-events: none;
+}
+
+.title-portfolio{
+    z-index: 205;
+    position: absolute;
+    width: clamp(320px, 75vw, 1000px);
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.button-logo{
+    z-index: 206;
+    position: absolute;
+    width: clamp(180px, 37.5vw, 500px);
+    height: auto;
+    top: 38%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+}
+
+.title-cassette{
+    z-index: 199;
+    position: absolute;
+    width: clamp(480px, 112.5vw, 1500px);
+    height: auto;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 55%;
+}
+
+.title-apple{
+    z-index: 201;
+    position: absolute;
+    width: clamp(320px, 75vw, 1000px);
+    height: auto;
+    transform: translate(-50%, -50%);
+    left: 71%;
+    top: 51%;
+}
+
+.title-circle{
+    z-index: 200;
+    position: absolute;
+    width: clamp(190px, 45vw, 600px);
+    height: auto;
+    transform: translate(-50%, -50%);
+    left: 70%;
+    top: 50%;
+}
+
+.title-star1{
+    z-index: 201;
+    position: absolute;
+    width: clamp(160px, 37.5vw, 500px);
+    height: auto;
+    transform: translate(-50%, -50%);
+    left: 25%;
+    top: 50%;
+}
+
+.title-star2{
+    z-index: 202;
+    position: absolute;
+    width: clamp(95px, 22.5vw, 300px);
+    height: auto;
+    transform: translate(-50%, -50%);
+    left: 77%;
+    top: 58%;
+}
+
+.title-star2-blink{
+    z-index: 203;
+    position: absolute;
+    width: clamp(28px, 6.75vw, 90px);
+    height: auto;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+/* scattered around the portfolio title — tweak positions to taste */
+.title-star2-blink1{ left: 32%; top: 30%; }
+.title-star2-blink2{ left: 68%; top: 35%; }
+.title-star2-blink3{ left: 38%; top: 68%; }
+.title-star2-blink4{ left: 62%; top: 65%; }
 
 /* ============ CIRCULAR GALLERY ============ */
 
