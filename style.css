@@ -79,6 +79,11 @@
         var(--bottom-push-phone)
     );
 
+    --cassette-target-left: 0.35;
+    --cassette-target-top: 0.25;
+    --cassette-open-scale: 2;
+    
+
 }
 
 
@@ -334,7 +339,7 @@ header {
 }
 
 
-/* ============ TITLE ANIMATION ============ */
+
 /* ============ TITLE ANIMATION ============ */
 .title-blur-layer {
     position: absolute;
@@ -451,6 +456,12 @@ header {
 .title-star2-blink3{ left: 38%; top: 68%; }
 .title-star2-blink4{ left: 62%; top: 65%; }
 
+
+
+
+
+/* ============ WORKS PAGE ============ */
+
 /* ============ CIRCULAR GALLERY ============ */
 
 #works {
@@ -483,42 +494,8 @@ header {
     left: 0;
     top: 50%;
     width: 100%;
-    height: 70vh;
-    transform: translateY(-50%);
-    overflow: hidden;
-    z-index: 2;
-    cursor: grab;
-}
-
-.circular-gallery:active {
-    cursor: grabbing;
-}
-
-.gallery-track {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    display: flex;
-    gap: 120px;              /* was 60px — more breathing room between items */
-    align-items: center;
-    transform: translate(-50%, -50%);
-    will-change: transform;
-}
-
-.gallery-item {
-    position: relative;
-    flex-shrink: 0;
-    width: 360px;      /* was 280px — bigger base size */
-    height: 460px;     /* was 360px */
-    transform-origin: center center;
-}
-
-.circular-gallery {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 100%;
-    height: 70vh;
+    height: min(70vh, 65dvh);   /* dvh accounts for mobile browser chrome */
+    min-height: 260px;          /* hard floor so it never collapses further */
     transform: translateY(-50%);
     overflow: hidden;
     z-index: 2;
@@ -545,32 +522,234 @@ header {
     cursor: grabbing;
 }
 
+.gallery-track {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: flex;
+    gap: 120px;
+    align-items: center;
+    transform: translate(-50%, -50%);
+    will-change: transform;
+}
+
+.gallery-item {
+    height: clamp(160px, 55vh, 380px);
+    aspect-ratio: 360 / 460;
+    width: auto;
+    flex-shrink: 0;
+}
+
 .gallery-item img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: contain;
     user-select: none;
-    pointer-events: none;
 }
 
 .gallery-item span {
     display: block;
-    margin-top: 10px;
+    margin-top: 6px;
     font-family: 'Arial-Narrow', sans-serif;
-    font-size: 24px;
+    font-size: clamp(14px, 1.6vh, 24px);
     color: white;
     text-align: center;
 }
 
+/*============CASSETTE 1===============*/
+.cassette1-display {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;      /* or 100%, matching #works's height */
+    transform: translate(-50%, -50%);
+    z-index: 110;
+    opacity: 0;
+    pointer-events: none;
+}
 
+.cassette1-display.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.layer1{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;   /* only applies if .layer1 is an <img>/<video> */
+    transform: translate(-50%, -50%);
+    z-index: 109;
+    overflow: hidden;
+}
+
+.bg1{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: clamp(900px, 85vw, 1600px);
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: 110;
+}
+
+.face1{
+    position: absolute;
+    top: clamp(40%, calc(50% + 5vw), 70%);
+    left: clamp(25%, 35vw, 35%);
+    width: clamp(450px, 45vw, 800px);
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: 111;
+}
+
+.face1-carousel{
+    position: absolute;
+    top: clamp(40%, calc(50% + 5vw), 70%);
+    left: 35%;
+    width: clamp(300px, 35vw, 650px);
+    aspect-ratio: 4 / 3;
+    transform: translate(-50%, -50%);
+    z-index: 112;
+    overflow: hidden;
+}
+
+.face1-track{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease;
+}
+
+.face1-slide{
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+}
+
+.face1-slide img,
+.face1-slide iframe{
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border: 0;
+}
+
+.button1-previous,
+.button1-next{
+    cursor: pointer;
+}
+
+.back1{
+    position: absolute;
+    top: 52%;
+    left: 73%;
+    width: clamp(500px, 48vw, 900px);
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: 111;
+}
+
+.button1-previous{
+    position: absolute;
+    top: clamp(60%, calc(90% - (100vw - 1025px) * 0.015), 90%);
+    left: 20%;
+    width: clamp(70px, 6vw, 80px);
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: 112;
+}
+
+.button1-play{
+    position: absolute;
+    top: clamp(60%, calc(90% - (100vw - 1025px) * 0.015), 90%);
+    left: 35%;
+    width: clamp(70px, 6vw, 80px);
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: 112;
+}
+
+.button1-next{
+    position: absolute;
+    top: clamp(60%, calc(90% - (100vw - 1025px) * 0.015), 90%);
+    left: 50%;
+    width: clamp(70px, 6vw, 80px);
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: 112;
+}
+
+.button1-exit{
+    position: absolute;
+    top: clamp(2%, calc(12% - (100vw - 1025px) * 0.015), 12%);
+    left: 90%;
+    width: clamp(70px, 6vw, 80px);
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: 112;
+}
+
+.project-detail1{
+    position: absolute;
+    top: clamp(60%, calc(90% - (100vw - 1025px) * 0.015), 90%);
+    left: 80%;
+    width: clamp(250px, 15vw, 400px);
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: 112;
+    cursor: pointer;
+}
+
+.track1{
+    position: absolute;
+    top: clamp(2%, calc(12% - (100vw - 1025px) * 0.015), 12%);
+    left: 28%;
+    width: clamp(450px, 32vw, 600px);
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: 112;
+}
+
+
+/*=========================================*/
+/*============DITHER EFFECT===============*/
+
+#dither-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: none;
+    mix-blend-mode: soft-light;
+}
+
+#dither-container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#home #dither-container {
+    z-index: 300;   /* adjust to sit correctly among home-bg-* layers */
+}
+/*=========================================*/
 /*============MEDIA QUERIES===============*/
 
 
 @media screen and (min-width: 1025px) {
     .nav-bg {
         position: absolute;
-        top: clamp(-5vw, 0vw, 10vw);
+        top: clamp(-5vw, -3vw, 0vw);
         left: 50%;
         transform: translate(-50%, -50%);
         width: clamp(100vw, 105vw, 110vw);
@@ -580,7 +759,9 @@ header {
     .home-bg-button-right{
         width: clamp(90px, 8vw, 150px);
     }
+
 }
+
 
 @media screen and (max-width: 1024px) {
     .nav-bg {
@@ -596,10 +777,41 @@ header {
         width: clamp(80px, 8vw, 120px);
     }
     .home-bg-creek{
-        top: 389px; /* only the top position needs to lock here — transform stays inherited from above */
+        top: 389px;
     }
 
+    /*=======cassette 1 display — restores pre-merge sizing below 1025px=======*/
+    .bg1{
+        width: clamp(500px, 85vw, 1800px);
+    }
+    .face1{
+        top: 60%;
+        left: 35%;
+        width: clamp(300px, 75vw, 800px);
+    }
+    .face1-carousel{
+        top: 60%;
+        width: clamp(250px, 75vw, 650px);
+    }
+    .back1{
+        width: clamp(300px, 80vw, 900px);
+    }
+    .button1-previous,
+    .button1-play,
+    .button1-next{
+        width: clamp(50px, 20vw, 100px);
+    }
+    .button1-exit{
+        width: clamp(50px, 20vw, 100px);
+    }
+    .project-detail1{
+        width: clamp(200px, 20vw, 400px);
+    }
+    .track1{
+        width: clamp(300px, 45vw, 600px);
+    }
 }
+
 
 @media screen and (max-width: 768px) {
     .nav-bg {
